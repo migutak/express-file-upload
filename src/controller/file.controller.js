@@ -1,6 +1,9 @@
 const uploadFile = require("../middleware/upload");
 const fs = require("fs");
-const baseUrl = "http://localhost:8080/files/";
+const baseUrl = "http://localhost:4005/files/";
+var data = require('../../config.js');
+
+const DIR = data.filePath;
 
 const upload = async (req, res) => {
   try {
@@ -12,6 +15,7 @@ const upload = async (req, res) => {
 
     res.status(200).send({
       message: "Uploaded the file successfully: " + req.file.originalname,
+      files: req.file
     });
   } catch (err) {
     console.log(err);
@@ -23,13 +27,14 @@ const upload = async (req, res) => {
     }
 
     res.status(500).send({
-      message: `Could not upload the file: ${req.file.originalname}. ${err}`,
+      //message: `Could not upload the file: ${req.file.originalname}. ${err}`,
+      message: err.toString()
     });
   }
 };
 
 const getListFiles = (req, res) => {
-  const directoryPath = __basedir + "/resources/static/assets/uploads/";
+  const directoryPath = DIR;
 
   fs.readdir(directoryPath, function (err, files) {
     if (err) {
@@ -53,7 +58,7 @@ const getListFiles = (req, res) => {
 
 const download = (req, res) => {
   const fileName = req.params.name;
-  const directoryPath = __basedir + "/resources/static/assets/uploads/";
+  const directoryPath = DIR;
 
   res.download(directoryPath + fileName, fileName, (err) => {
     if (err) {
