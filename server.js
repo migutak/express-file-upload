@@ -13,11 +13,12 @@ const allowedOrigins = [
   'http://ecollecttst.co-opbank.co.ke:8002'
 ];
 
-var corsOptions = {
-  origin: "http://localhost:4200"
+const corsConfig = {
+  credentials: true,
+  origin: true,
 };
 
-app.use(cors(allowedOrigins));
+app.use(cors(corsConfig));
 
 const initRoutes = require("./src/routes");
 

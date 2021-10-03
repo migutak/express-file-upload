@@ -1,0 +1,17 @@
+version: '3.3'
+services: 
+  file_uploads:
+    image: 172.16.204.72:5100/file_uploads:5.2
+    container_name: file_uploads
+    environment:
+    - TZ=${TZ}
+    - FILEPATH=${FILEPATHUPLOADS}
+    ports:
+    - 4005:4005
+    volumes:
+    - /app/nfs/uploads:/home/node/uploads
+    - /app/nfs/demandletters:/home/node/demandletters
+    restart: always
+    depends_on:
+      - fluentbit
+    network_mode: bridge
