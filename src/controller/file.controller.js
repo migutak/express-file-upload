@@ -2,6 +2,16 @@ const uploadFile = require("../middleware/upload");
 const fs = require("fs");
 const baseUrl = "http://localhost:4005/files/";
 var data = require('../../config.js');
+var Minio = require("minio");
+const multer = require("multer");
+
+var minioClient = new Minio.Client({
+  endPoint: process.env.MINIO_ENDPOINT || '127.0.0.1',
+  port: process.env.MINIO_PORT || 9005,
+  useSSL: false, 
+  accessKey: process.env.ACCESSKEY || 'AKIAIOSFODNN7EXAMPLE',
+  secretKey: process.env.SECRETKEY || 'wJalrXUtnFEMIK7MDENGbPxRfiCYEXAMPLEKEY'
+});
 
 const DIR = data.filePath;
 
@@ -15,7 +25,7 @@ const upload = async (req, res) => {
 
     res.status(200).send({
       message: "Uploaded the file successfully: " + req.file.originalname,
-      files: req.file
+      files: req.file 
     });
   } catch (err) {
     console.log(err);
@@ -72,5 +82,5 @@ const download = (req, res) => {
 module.exports = {
   upload,
   getListFiles,
-  download,
+  download
 };
